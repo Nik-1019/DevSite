@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikko Cajayon - Cloud Engineer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: #e5e5e5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(0, 0, 0, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffffff, #cccccc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #e5e5e5;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(45deg, #ffffff, #cccccc);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: #ffffff;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #e5e5e5;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+        }
+
+        section {
+            min-height: 60vh;
+            padding: 2rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #ffffff, #cccccc, #999999);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(45deg, #ffffff, #cccccc);
+            border-radius: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #cccccc;
+            margin-bottom: 1rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #333333, #666666);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(45deg, #ffffff, #cccccc, #999999);
+            background-size: 200% 100%;
+            animation: gradientMove 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 200% 0; }
+            50% { background-position: -200% 0; }
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .card h3 {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.1);
+            color: #cccccc;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .skill-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(26, 26, 26, 0.5);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: rgba(26, 26, 26, 0.8);
+            transform: scale(1.05);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #cccccc;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #e5e5e5;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            display: inline-block;
+            padding: 1rem;
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 50%;
+            color: #cccccc;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+
+
+        /* Image placeholders */
+        .profile-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #1a1a1a, #333333);
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            margin: 0 auto 1rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.8s;
+        }
+
+        .profile-image:hover::before {
+            left: 100%;
+        }
+
+        /* Speaking section styles */
+        .speaking-container {
+            margin-top: 1rem;
+        }
+
+        .speaking-scroll {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            padding: 1rem 0 2rem 0;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) rgba(26, 26, 26, 0.5);
+        }
+
+        .speaking-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .speaking-scroll::-webkit-scrollbar-track {
+            background: rgba(26, 26, 26, 0.5);
+            border-radius: 4px;
+        }
+
+        .speaking-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        .speaking-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .speaking-card {
+            min-width: 320px;
+            flex-shrink: 0;
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 15px;
+            padding: 1.2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .speaking-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(45deg, #ffffff, #cccccc, #999999);
+            background-size: 200% 100%;
+            animation: gradientMove 3s ease-in-out infinite;
+        }
+
+        .speaking-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .speaking-image {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(45deg, #1a1a1a, #333333);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .speaking-image:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .speaking-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .speaking-image:hover::before {
+            left: 100%;
+        }
+
+        .image-placeholder {
+            color: #64748b;
+            font-size: 3rem;
+            text-align: center;
+        }
+
+        .speaking-card h3 {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .speaking-card p {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .scroll-indicator {
+            text-align: center;
+            margin-top: 1rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .scroll-arrow {
+            font-size: 1.2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(0);
+            }
+            40% {
+                transform: translateX(5px);
+            }
+            60% {
+                transform: translateX(-5px);
+            }
+        }
+
+        .speaking-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .scroll-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .scroll-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .scroll-btn.left {
+            left: -20px;
+        }
+
+        .scroll-btn.right {
+            right: -20px;
+        }
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.98);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .home section {
+                grid-template-columns: 1fr !important;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            section {
+                padding: 1.5rem 1rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .social-links {
+                gap: 1rem;
+            }
+        }
+
+        /* Smooth scrolling for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Add scroll padding to account for fixed navbar */
+        section {
+            scroll-margin-top: 100px;
+        }
+
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top: 3px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">CloudTech Pro</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#speaking">Speaking</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="#affiliations">Affiliations</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" style="padding-bottom: 20rem;">
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: center; padding-top: 7rem;">
+                <div style="text-align: center;">
+                    <div class="profile-image">
+                        <img src="source/Profile.jpg" alt="Nikko Cajayon" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    </div>
+                    <p style="color: #64748b; font-size: 0.9rem;"></p>
+                </div>
+                <div style="text-align: center;">
+                    <h1>Nikko Cajayon</h1>
+                    <p class="subtitle">Tech Lead</p>
+                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        Result-Driven Tech Community Leader with hands-on experience in Cloud Technologies. 
+                        Proven leadership in scaling tech communities, organizing workshops, and supporting 
+                        tech initiatives through talks, mentorship, and collaboration.
+                    </p>
+                    <a href="#portfolio" class="cta-button">View My Work</a>
+                </div>
+            </div>
+            
+            <div class="skills-grid" style="margin-top: 10rem;">
+                <div class="skill-item">
+                    <span class="skill-icon">☁️</span>
+                    <h3>Leadership</h3>
+                    <p>Community</p>
+                </div>
+                <div class="skill-item">
+                    <span class="skill-icon">🔧</span>
+                    <h3>Cloud Computing</h3>
+                    <p>CI/CD, Infrastructure as Code</p>
+                </div>
+                <div class="skill-item">
+                    <span class="skill-icon">🔒</span>
+                    <h3>Programming</h3>
+                    <p>Software Development</p>
+                </div>
+                <div class="skill-item">
+                    <span class="skill-icon">📊</span>
+                    <h3>Speaker</h3>
+                    <p>Talks & Workshops</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <h2>About Me</h2>
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: center; margin-top: 1rem;">
+                <div style="text-align: center;">
+                    <div style="width: 300px; height: 300px; border-radius: 50%; margin: 0 auto 1rem; overflow: hidden;">
+                        <img src="source/aboutme.png" alt="About Nikko Cajayon" style="width: 100%; height: 100%; object-fit: cover;">
+                        
+                    </div>
+                </div>
+                <div>
+                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                        With over [X] years of experience in cloud engineering, I specialize in designing and implementing 
+                        robust, scalable cloud solutions that drive business transformation. My expertise spans across 
+                        multiple cloud platforms, with a focus on security, performance, and cost optimization.
+                    </p>
+                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                        I'm passionate about sharing knowledge through speaking engagements and contributing to the 
+                        cloud community. My approach combines technical excellence with business acumen to deliver 
+                        solutions that not only work but also add real value to organizations.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">Azure</span>
+                        <span class="tech-tag">Google Cloud</span>
+                        <span class="tech-tag">Kubernetes</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">Terraform</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Go</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section id="portfolio">
+            <h2>Portfolio</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                Here are some of my recent projects that showcase my cloud engineering expertise:
+            </p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Multi-Cloud Migration Platform</h3>
+                    <p>Designed and implemented a comprehensive migration platform that helped a Fortune 500 company migrate 200+ applications from on-premises to multi-cloud architecture, reducing costs by 40%.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">Azure</span>
+                        <span class="tech-tag">Terraform</span>
+                        <span class="tech-tag">Kubernetes</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Serverless Data Processing Pipeline</h3>
+                    <p>Built a real-time data processing pipeline using serverless technologies to handle 10M+ events per day with 99.9% uptime and automatic scaling capabilities.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">AWS Lambda</span>
+                        <span class="tech-tag">API Gateway</span>
+                        <span class="tech-tag">DynamoDB</span>
+                        <span class="tech-tag">CloudWatch</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Infrastructure as Code Framework</h3>
+                    <p>Developed a reusable IaC framework that standardized cloud deployments across multiple teams, reducing deployment time from hours to minutes.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Terraform</span>
+                        <span class="tech-tag">Ansible</span>
+                        <span class="tech-tag">GitLab CI</span>
+                        <span class="tech-tag">Docker</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Cloud Security Automation</h3>
+                    <p>Implemented automated security scanning and compliance monitoring system that ensures 100% compliance with industry standards across all cloud resources.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">AWS Security Hub</span>
+                        <span class="tech-tag">CloudTrail</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">SNS</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Speaking Section -->
+        <section id="speaking">
+            <h2>Speaking Engagements</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 0.8rem;">
+                I enjoy sharing knowledge and experiences with the cloud community through various speaking opportunities:
+            </p>
+            
+            <div class="speaking-container">
+                <div class="speaking-wrapper">
+                    <button class="scroll-btn left" onclick="scrollSpeaking('left')">‹</button>
+                    <div class="speaking-scroll" id="speakingScroll">
+                        <button class="scroll-btn right" onclick="scrollSpeaking('right')">›</button>
+                    <div class="speaking-card">
+                        <div class="speaking-image">
+                            <span class="image-placeholder">🎤</span>
+                        </div>
+                        <h3>CloudTech Summit 2024</h3>
+                        <p><strong>Topic:</strong> "Scaling Serverless: Lessons from Processing 100M Daily Events"</p>
+                        <p>Shared insights on building and scaling serverless architectures for high-volume data processing.</p>
+                        <p style="color: #94a3b8; font-size: 0.9rem;">San Francisco, CA | March 2024</p>
+                    </div>
+                    
+                    <div class="speaking-card">
+                        <div class="speaking-image">
+                            <span class="image-placeholder">🏆</span>
+                        </div>
+                        <h3>DevOps World Conference</h3>
+                        <p><strong>Topic:</strong> "Infrastructure as Code: Best Practices for Multi-Cloud Deployments"</p>
+                        <p>Presented strategies for managing infrastructure across multiple cloud providers using Terraform and best practices.</p>
+                        <p style="color: #94a3b8; font-size: 0.9rem;">Austin, TX | September 2023</p>
+                    </div>
+                    
+                    <div class="speaking-card">
+                        <div class="speaking-image">
+                            <span class="image-placeholder">🛡️</span>
+                        </div>
+                        <h3>AWS Community Day</h3>
+                        <p><strong>Topic:</strong> "Security-First Cloud Architecture Design"</p>
+                        <p>Workshop on implementing security by design principles in cloud architecture from the ground up.</p>
+                        <p style="color: #94a3b8; font-size: 0.9rem;">Seattle, WA | June 2023</p>
+                    </div>
+                    
+                    <div class="speaking-card">
+                        <div class="speaking-image">
+                            <span class="image-placeholder">💰</span>
+                        </div>
+                        <h3>Tech Meetup Series</h3>
+                        <p><strong>Topic:</strong> "Cost Optimization Strategies for Cloud Workloads"</p>
+                        <p>Monthly meetup presentation covering practical approaches to reducing cloud costs without sacrificing performance.</p>
+                        <p style="color: #94a3b8; font-size: 0.9rem;">Local Tech Community | Ongoing</p>
+                    </div>
+                    
+                    <div class="speaking-card">
+                        <div class="speaking-image">
+                            <span class="image-placeholder">☁️</span>
+                        </div>
+                        <h3>Cloud Native Summit</h3>
+                        <p><strong>Topic:</strong> "Microservices Architecture in Production"</p>
+                        <p>Deep dive into real-world challenges and solutions when implementing microservices at scale.</p>
+                        <p style="color: #94a3b8; font-size: 0.9rem;">Denver, CO | November 2023</p>
+                    </div>
+                    
+                    <div class="speaking-card">
+                        <div class="speaking-image">
+                            <span class="image-placeholder">🔧</span>
+                        </div>
+                        <h3>Platform Engineering Forum</h3>
+                        <p><strong>Topic:</strong> "Building Developer-Friendly Cloud Platforms"</p>
+                        <p>Explored strategies for creating internal platforms that boost developer productivity and reduce operational overhead.</p>
+                        <p style="color: #94a3b8; font-size: 0.9rem;">Portland, OR | January 2024</p>
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="scroll-indicator">
+                    <span>Scroll to see more</span>
+                    <span class="scroll-arrow">→</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications">
+            <h2>Certifications</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                My commitment to continuous learning is reflected in these industry certifications:
+            </p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🏆 AWS Solutions Architect - Professional</h3>
+                    <p>Advanced certification demonstrating expertise in designing distributed applications and systems on AWS.</p>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">Valid until: Dec 2025</p>
+                </div>
+                
+                <div class="card">
+                    <h3>☁️ Azure Solutions Architect Expert</h3>
+                    <p>Expert-level certification covering advanced Azure architecture and implementation skills.</p>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">Valid until: Nov 2025</p>
+                </div>
+                
+                <div class="card">
+                    <h3>🔧 Google Cloud Professional Cloud Architect</h3>
+                    <p>Professional certification validating ability to design, develop, and manage robust GCP solutions.</p>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">Valid until: Oct 2025</p>
+                </div>
+                
+                <div class="card">
+                    <h3>⚡ Kubernetes Administrator (CKA)</h3>
+                    <p>Hands-on certification demonstrating skills in Kubernetes cluster administration and troubleshooting.</p>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">Valid until: Jan 2026</p>
+                </div>
+                
+                <div class="card">
+                    <h3>🔐 AWS Security - Specialty</h3>
+                    <p>Specialty certification focusing on AWS security services and security best practices.</p>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">Valid until: Aug 2025</p>
+                </div>
+                
+                <div class="card">
+                    <h3>📊 Terraform Associate</h3>
+                    <p>Certification validating foundational knowledge of Infrastructure as Code using Terraform.</p>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">Valid until: Mar 2026</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Affiliations Section -->
+        <section id="affiliations">
+            <h2>Professional Affiliations</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                Active participation in professional organizations and communities:
+            </p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>NextWork</h3>
+                    <p><strong>Role:</strong> Community Lead | Strategist</p>
+                    <p>Active contributor to cloud-native projects and advocate for containerized applications and microservices architecture.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>AWS Cloud Club - Philippines</h3>
+                    <p><strong>Role:</strong> Director of SkillBuilder</p>
+                    <p>Help organize monthly meetups and regularly speak on AWS best practices and new services.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>AWS CC - Haribon</h3>
+                    <p><strong>Role:</strong> Chief Technology Officer</p>
+                    <p>Promote DevOps practices and culture transformation within the local tech community.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Microsoft Azure Developers Philippines</h3>
+                    <p><strong>Role:</strong> Co-Founder</p>
+                    <p>Stay connected with the latest advances in computer science and engineering practices.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>👥 [Your City] Tech Community</h3>
+                    <p><strong>Role:</strong> Mentor</p>
+                    <p>Mentor junior developers and cloud engineers, helping them advance their careers in cloud technologies.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>🚀 Open Source Initiative</h3>
+                    <p><strong>Role:</strong> Contributor</p>
+                    <p>Regular contributor to open-source cloud and DevOps tools, with focus on infrastructure automation.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 1rem; text-align: center;">
+                I'm always interested in discussing cloud architecture, sharing knowledge, or exploring new opportunities.
+            </p>
+            
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button type="submit" class="cta-button">Send Message</button>
+                </div>
+            </form>
+            
+            <div class="social-links">
+                <a href="https://linkedin.com/in/yourprofile" class="social-link" target="_blank">
+                    💼
+                </a>
+                <a href="https://github.com/yourusername" class="social-link" target="_blank">
+                    🐱
+                </a>
+                <a href="https://twitter.com/yourusername" class="social-link" target="_blank">
+                    🐦
+                </a>
+                <a href="mailto:your.email@example.com" class="social-link">
+                    ✉️
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Loading screen
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Navigation functionality
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinksContainer = document.getElementById('navLinks');
+
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinksContainer.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking nav links
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinksContainer.classList.remove('active');
+            });
+        });
+
+        // Highlight active section in navigation based on scroll position
+        function updateActiveNavLink() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                const sectionHeight = section.offsetHeight;
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Update active nav link on scroll
+        window.addEventListener('scroll', updateActiveNavLink);
+        
+        // Initialize active nav link
+        document.addEventListener('DOMContentLoaded', updateActiveNavLink);
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Contact form handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! I\'ll get back to you soon.');
+            this.reset();
+        });
+
+        // Remove duplicate CTA button handler since it's already handled above
+
+        // Smooth animations on scroll (for future enhancement)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = '0.2s';
+                    entry.target.style.animationName = 'fadeInUp';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards for animation
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Speaking scroll navigation
+        function scrollSpeaking(direction) {
+            const container = document.getElementById('speakingScroll');
+            const scrollAmount = 350;
+            if (direction === 'left') {
+                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            } else {
+                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
